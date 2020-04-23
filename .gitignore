@@ -1,0 +1,7 @@
+target
+*.class
+.idea
+out
+*.iml
+.attach*
+inputs/*.txt
