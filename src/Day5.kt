@@ -8,4 +8,4 @@ fun main(args: Array<String>) {
     println(runProgram(program, listOf(5)).flatMap { toEmpty(it.output) }.toList())
 }
 
-fun toEmpty(s: Int?): Sequence<Int> = if (s == null) emptySequence() else sequenceOf(s)
+fun toEmpty(s: Long?): Sequence<Long> = if (s == null) emptySequence() else sequenceOf(s)

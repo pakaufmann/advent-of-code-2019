@@ -1,7 +1,7 @@
 fun main(args: Array<String>) {
     val program = State(0, readProgram("day7.txt"))
 
-    val max = setOf(0, 1, 2, 3, 4).permutations()
+    val max = setOf(0L, 1, 2, 3, 4).permutations()
         .map { runWithSettings(program, it).second }
         .max()
 
@@ -10,13 +10,13 @@ fun main(args: Array<String>) {
 
     print("Part 2: ")
 
-    val maxComplete = setOf(5, 6, 7, 8, 9).permutations()
+    val maxComplete = setOf(5L, 6, 7, 8, 9).permutations()
         .map { runToEnd(program, it).find { it.first.last().finished() }!!.second }
 
     println(maxComplete.max())
 }
 
-private fun runToEnd(start: State, phaseSequence: List<Int>): Sequence<Pair<List<State>, Int>> =
+private fun runToEnd(start: State, phaseSequence: List<Long>): Sequence<Pair<List<State>, Long>> =
     generateSequence(runWithSettings(start, phaseSequence)) { run ->
         run.first.fold(Pair(emptyList(), run.second)) { acc, program ->
             val result = runProgram(program.copy(output = null), listOf(acc!!.second))
@@ -26,8 +26,8 @@ private fun runToEnd(start: State, phaseSequence: List<Int>): Sequence<Pair<List
         }
     }
 
-private fun runWithSettings(program: State, phaseSequence: List<Int>): Pair<List<State>, Int> {
-    return phaseSequence.fold(Pair(emptyList(), 0)) { acc, setting ->
+private fun runWithSettings(program: State, phaseSequence: List<Long>): Pair<List<State>, Long> {
+    return phaseSequence.fold(Pair(emptyList(), 0L)) { acc, setting ->
         val result = runProgram(program, listOf(setting, acc.second)).find { it.output != null }!!
         Pair(acc.first + result, result.output!!)
     }
