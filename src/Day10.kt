@@ -59,7 +59,7 @@ data class Ratio(val x: Int, val y: Int) {
             return Ratio(x / x.absoluteValue, 0)
         }
 
-        val gcd = greatedCommonDivisor(x.absoluteValue, y.absoluteValue)
+        val gcd = greatestCommonDivisor(x.absoluteValue.toLong(), y.absoluteValue.toLong()).toInt()
         return Ratio(x / gcd, y / gcd)
     }
 }
@@ -68,25 +68,25 @@ data class Asteroid(val x: Int, val y: Int) {
     fun distanceTo(other: Asteroid): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
 }
 
-fun greatedCommonDivisor(x: Int, y: Int): Int {
+fun greatestCommonDivisor(x: Long, y: Long): Long {
     val xFactors = primeFactors(x)
     val yFactors = primeFactors(y)
     return xFactors.intersect(yFactors)
-        .fold(1) { acc, n ->
+        .fold(1L) { acc, n ->
             val repeated = min(xFactors.count { it == n }, yFactors.count { it == n })
             acc * n.toDouble().pow(repeated).toInt()
         }
 }
 
-fun primeFactors(n: Int, factor: Int = 2, factors: List<Int> = emptyList()): List<Int> =
-    if (n == 1 || n == 0) {
+tailrec fun primeFactors(n: Long, factor: Long = 2L, factors: List<Long> = emptyList()): List<Long> =
+    if (n == 1L || n == 0L) {
         factors
     } else if (factor == n) {
         factors + factor
-    } else if (n % factor == 0) {
-        primeFactors(n / factor, 2, factors + factor)
+    } else if (n % factor == 0L) {
+        primeFactors(n / factor, 2L, factors + factor)
     } else {
-        primeFactors(n, factor + 1, factors)
+        primeFactors(n, factor + 1L, factors)
     }
 
 fun readAsteroids(file: String): List<Asteroid> =
