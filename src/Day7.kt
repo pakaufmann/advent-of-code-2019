@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 private fun runToEnd(start: State, phaseSequence: List<Long>): Sequence<Pair<List<State>, Long>> =
     generateSequence(runWithSettings(start, phaseSequence)) { run ->
         run.first.fold(Pair(emptyList(), run.second)) { acc, program ->
-            val result = runProgram(program.copy(output = null), listOf(acc!!.second))
+            val result = runProgram(program.copy(output = null), sequenceOf(acc!!.second))
                 .find { it.output != null || it.finished() }!!
 
             Pair(acc.first + result, result.output ?: acc.second)
@@ -28,7 +28,7 @@ private fun runToEnd(start: State, phaseSequence: List<Long>): Sequence<Pair<Lis
 
 private fun runWithSettings(program: State, phaseSequence: List<Long>): Pair<List<State>, Long> {
     return phaseSequence.fold(Pair(emptyList(), 0L)) { acc, setting ->
-        val result = runProgram(program, listOf(setting, acc.second)).find { it.output != null }!!
+        val result = runProgram(program, sequenceOf(setting, acc.second)).find { it.output != null }!!
         Pair(acc.first + result, result.output!!)
     }
 }

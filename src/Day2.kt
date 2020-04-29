@@ -31,7 +31,7 @@ private fun part2(start: State): Triple<Int, Int, State?>? {
         .find { it.third.program[0] == 19690720L }
 }
 
-fun runProgram(start: State, inputList: List<Long> = emptyList()): Sequence<State> =
+fun runProgram(start: State, inputList: Sequence<Long> = emptySequence()): Sequence<State> =
     generateSequence(Pair(start, inputList)) { it.first.runStep(it.second) }
         .map { it.first }
         .takeWhileInclusive { !it.finished() }
@@ -48,7 +48,7 @@ fun readProgram(file: String): Map<Long, Long> =
 data class State(val ip: Long, val program: Map<Long, Long>, val output: Long? = null, val relativeBase: Long = 0) {
     fun finished(): Boolean = program[ip] == 99L
 
-    fun runStep(readList: List<Long>): Pair<State, List<Long>> {
+    fun runStep(readList: Sequence<Long>): Pair<State, Sequence<Long>> {
         return when (currentInstruction().toInt() % 100) {
             1 ->
                 Pair(
