@@ -4,7 +4,7 @@ import kotlin.math.pow
 
 fun main(args: Array<String>) {
     val initialState = ProgramState(0, readProgram("day2.txt"), PrintIO)
-    val solution = runProgramWithState(initialState.writeValue(1, 12).writeValue(2, 2))
+    val solution = runProgramIO(initialState.writeValue(1, 12).writeValue(2, 2))
         .last()
 
     print("Part 1: ")
@@ -23,7 +23,7 @@ private fun part2(start: ProgramState<PrintIO>): Triple<Int, Int, ProgramState<P
                     Triple(
                         noun,
                         verb,
-                        runProgramWithState(start.writeValue(1, noun.toLong()).writeValue(2, verb.toLong())).last()
+                        runProgramIO(start.writeValue(1, noun.toLong()).writeValue(2, verb.toLong())).last()
                     )
                 }
                 .asSequence()
@@ -31,7 +31,7 @@ private fun part2(start: ProgramState<PrintIO>): Triple<Int, Int, ProgramState<P
         .find { it.third.program[0] == 19690720L }
 }
 
-fun <T : ProgramIO<T>> runProgramWithState(start: ProgramState<T>): Sequence<ProgramState<T>> =
+fun <T : ProgramIO<T>> runProgramIO(start: ProgramState<T>): Sequence<ProgramState<T>> =
     generateSequence(start) { it.runStep() }
         .takeWhileInclusive { !it.finished() }
 

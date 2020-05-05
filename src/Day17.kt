@@ -2,7 +2,7 @@ fun main(args: Array<String>) {
     val program = readProgram("day17.txt")
 
     print("Part 1: ")
-    val result = runProgramWithState(ProgramState(0, program, MapIO())).last().io
+    val result = runProgramIO(ProgramState(0, program, MapIO())).last().io
     val scaffolds = result.scaffolds
     println(findIntersections(scaffolds).map { it.x * it.y }.sum())
 
@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
     val (main, subroutines) = findMatchingSubroutines(compacted)!!
     println(
-        runProgramWithState(
+        runProgramIO(
             ProgramState(0, program, SubroutineIO.fromRoutines(main, subroutines))
                 .writeValue(0, 2)
         ).dropWhile { !it.finished() }.first().io.output
