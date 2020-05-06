@@ -59,7 +59,7 @@ data class NetworkState(
         if (computers.all { it.io.idle() } && nat != null) {
             copy(
                 nat = null,
-                pendingMessages = pendingMessages + nat!!.copy(to = 0),
+                pendingMessages = pendingMessages + nat.copy(to = 0),
                 sentNats = sentNats + nat
             )
         } else {
