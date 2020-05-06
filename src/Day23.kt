@@ -25,7 +25,7 @@ private fun runNetwork(computers: List<ProgramState<ComputerState>>): Sequence<N
     return generateSequence(NetworkState(computers)) { network ->
         val updatedNetwork = network.sendNat()
 
-        val next = updatedNetwork.computers.mapIndexed { n, computer ->
+        val updatedComputes = updatedNetwork.computers.mapIndexed { n, computer ->
             val newMessages = updatedNetwork.pendingMessages.filter { it.to == n.toLong() }
             val newState = runProgramIO(computer.changeIO(computer.io.addMessage(newMessages))).take(2).last()
             val newOutput = newState.io.outputQueue
@@ -37,13 +37,11 @@ private fun runNetwork(computers: List<ProgramState<ComputerState>>): Sequence<N
             }
         }
 
-        val newComputerStates = next.map { it.first }
-        val newPendingMessages = next.mapNotNull { it.second }
-        val newNat = newPendingMessages.find { it.to == 255L }
+        val newNat = updatedComputes.mapNotNull { it.second }.find { it.to == 255L }
 
         updatedNetwork.copy(
-            computers = newComputerStates,
-            pendingMessages = newPendingMessages,
+            computers = updatedComputes.map { it.first },
+            pendingMessages = updatedComputes.mapNotNull { it.second },
             nat = newNat ?: updatedNetwork.nat
         )
     }
