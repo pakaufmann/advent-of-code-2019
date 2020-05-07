@@ -130,7 +130,8 @@ data class ProgramState<T : ProgramIO<T>>(
         return this.copy(program = program.plus(Pair(index, newValue)))
     }
 
-    fun changeIO(newIO: T): ProgramState<T> = copy(io = newIO)
+    fun <U : ProgramIO<U>> changeIO(newIO: U): ProgramState<U> =
+        ProgramState(ip, program, newIO, relativeBase)
 }
 
 fun runProgram(start: State, inputList: Sequence<Long> = emptySequence()): Sequence<State> =
