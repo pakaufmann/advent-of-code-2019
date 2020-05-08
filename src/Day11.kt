@@ -93,6 +93,14 @@ data class RobotState(
 }
 
 data class Position(val x: Int, val y: Int) {
+    fun neighbours(): List<Position> =
+        listOf(
+            copy(x = x + 1),
+            copy(x = x - 1),
+            copy(y = y + 1),
+            copy(y = y - 1)
+        )
+
     fun move(direction: Direction): Position =
         when (direction) {
             Direction.UP ->
